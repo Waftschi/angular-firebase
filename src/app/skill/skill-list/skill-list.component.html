@@ -1,0 +1,29 @@
+
+<mat-card *ngFor="let skill of skills | async"  [ngClass]="{'app-disabled': !skill.isEnabled}">
+    <div  fxFlex="90" fxLayoutAlign="start center">
+    {{skill.name}}
+    </div>
+    <div fxFlex="10" fxLayoutAlign="end center">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/skill-edit', skill.id]">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button *ngIf="!skill.isEnabled" mat-menu-item (click)="disable(skill.id, true)">
+                <mat-icon>check</mat-icon>
+                <span>Enable</span>
+            </button>
+            <button *ngIf="skill.isEnabled" mat-menu-item (click)="disable(skill.id, false)">
+                <mat-icon>close</mat-icon>
+                <span>Disable</span>
+            </button>
+        </mat-menu>
+    </div>
+</mat-card>
+
+<button mat-fab color="accent" class="add" [routerLink]="['/skill-edit', '0']">
+    <mat-icon aria-label="Add new item">add</mat-icon>
+</button>

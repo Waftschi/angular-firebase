@@ -1,0 +1,23 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+<mat-toolbar color="primary" ><button mat-button [routerLink]="['/home']">i-Plan</button>
+    <div fxLayout="row" fxLayoutAlign="end center" class="nav-buttons">
+        <button mat-button [routerLink]="['/items']">Items</button>
+        <button mat-button [routerLink]="['/skills']">Skills</button>
+        <button mat-button>Company</button>
+    </div>
+</mat-toolbar>
+
+<div style="margin-top: 20px">
+    <div fxFlex="20"></div>
+    <div fxFlex="60">
+        <router-outlet></router-outlet>
+    </div>
+    <div fxFlex></div>
+</div>
+
+<!--<app-items></app-items>-->
+<!--<router-outlet></router-outlet>-->
+
+
+
