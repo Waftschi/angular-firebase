@@ -15,6 +15,9 @@ import { SkillModule } from './skill/skill.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthGuard } from './shared/auth.guard';
+import { UserModule } from './user/user.module';
 
 
 @NgModule({
@@ -23,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [
+        AngularFireAuthModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
         AppRoutingModule,
@@ -34,8 +38,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         ReactiveFormsModule,
         SharedModule,
         SkillModule,
+        UserModule,
     ],
-    providers: [],
+    providers: [AuthGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {

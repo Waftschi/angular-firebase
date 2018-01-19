@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DataService } from '../shared/data.service';
+import { Skill } from './skill';
 
-export interface Skill {
-    name: string;
-}
 
 @Injectable()
 export class SkillService {
-    skills: Observable<any[]>;
 
-    constructor(private ds: DataService) {
+    constructor(private ds: DataService) {}
 
-    }
-
-    getSkills() {
-        return this.ds.getCollection('skills');
+    getSkills(): Observable<Skill[]> {
+        return <Observable<Skill[]>> this.ds.getCollection('skills');
     }
 }

@@ -1,5 +1,4 @@
 <mat-card>
-
     <form [formGroup]="skillForm" novalidate>
         <div fxFlex="70" fxLayoutAlign="start center">
             <div fxFlex="50" fxLayoutAlign="start center">
@@ -8,19 +7,7 @@
                     <mat-error *ngIf="skillForm.get('name').status==='INVALID'">Mandatory</mat-error>
                 </mat-form-field>
             </div>
-            <div fxFlex="50" fxLayoutAlign="start center">
-                <!--<mat-slide-toggle-->
-                        <!--formControlName="isEnabled"-->
-                        <!--[color]="'primary'"-->
-                        <!--[checked]="skillForm.get('isEnabled').value"-->
-                        <!--[disabled]="false">-->
-
-                    <!--Enabled-->
-                <!--</mat-slide-toggle>-->
-            </div>
-            <!--<mat-form-field class="example-full-width">-->
-            <!--<textarea matInput placeholder="Leave a comment"></textarea>-->
-            <!--</mat-form-field>-->
+            <div fxFlex="50" fxLayoutAlign="start center"></div>
         </div>
         <div fxFlex="30" fxLayoutAlign="end center">
             <button mat-button color="primary" (click)="update()">
@@ -43,15 +30,6 @@
                     <span>Delete</span>
                 </button>
             </mat-menu>
-
-            <!--<button mat-button (click)="delete()">-->
-                <!--<span>Delete</span>-->
-            <!--</button>-->
-            <!--<button *ngIf="!skillForm.get('isEnabled').value" mat-button="" (click)="disable(true)">Enable-->
-            <!--</button>-->
-            <!--<button *ngIf="skillForm.get('isEnabled').value" mat-button="" (click)="disable(false)">Disable-->
-
-            <!--</button>-->
         </div>
     </form>
     <!--<p>Skill Value: {{ skill | json }}</p>-->

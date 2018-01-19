@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {AngularFirestore} from 'angularfire2/firestore';
-import {Observable} from 'rxjs/Observable';
+import { Component } from '@angular/core';
+import { AuthService } from './shared/auth.service';
 
 
 @Component({
@@ -10,4 +9,8 @@ import {Observable} from 'rxjs/Observable';
 })
 export class AppComponent {
     title = 'app';
+
+    constructor(public authService: AuthService) {
+
+    }
 }

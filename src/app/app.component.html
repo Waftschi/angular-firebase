@@ -1,10 +1,18 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
-<mat-toolbar color="primary" ><button mat-button [routerLink]="['/home']">i-Plan</button>
+<mat-toolbar color="primary">
+    <button mat-button [routerLink]="['/home']">i-Plan</button>
+    <button *ngIf="!(authService.user$ | async)?.uid" class="login" mat-button (click)="authService.login()">Login
+    </button>
+    <button *ngIf="(authService.user$ | async)?.uid" class="logout" mat-button (click)="authService.logout()">Logout
+    </button>
     <div fxLayout="row" fxLayoutAlign="end center" class="nav-buttons">
-        <button mat-button [routerLink]="['/items']">Items</button>
+        <div *ngIf="(authService.user$ | async)?.uid">
+            <button mat-button [routerLink]="['/items']">Items</button>
+        </div>
+        <button mat-button [routerLink]="['/users']">Users</button>
         <button mat-button [routerLink]="['/skills']">Skills</button>
-        <button mat-button>Company</button>
+        <!--<button mat-button>Company</button>-->
     </div>
 </mat-toolbar>
 

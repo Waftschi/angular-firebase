@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
     styleUrls: ['./skill-edit.component.css']
 })
 export class SkillEditComponent implements OnInit, OnDestroy {
-    private sub: Subscription;
+    // private sub: Subscription;
     private id: string;
     private isNew: boolean;
 
@@ -58,7 +58,7 @@ export class SkillEditComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
+        this.route.params.subscribe(params => {
             if (this.skill === null) {
                 return;
             }
@@ -75,7 +75,7 @@ export class SkillEditComponent implements OnInit, OnDestroy {
                 this.skill = skill;
                 this.skillForm.patchValue({
                     name: this.skill ? this.skill.name : '',
-                    isEnabled: !!this.skill.isEnabled,
+                    isEnabled: this.skill && !!this.skill.isEnabled,
                 });
             });
 
@@ -83,6 +83,6 @@ export class SkillEditComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        // this.sub.unsubscribe();
     }
 }
