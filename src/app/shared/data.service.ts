@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { AppDocument } from './document';
+import { User } from '../user/user';
 
 
 @Injectable()
@@ -37,7 +38,7 @@ export class DataService {
         );
     }
 
-    read(col, data: AppDocument): Observable<AppDocument> {
+    read(col, data: AppDocument): Observable<AppDocument | User> {
         return this.afs.doc<AppDocument>(col + '/' + data.id).valueChanges();
     }
 

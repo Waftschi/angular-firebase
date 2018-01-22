@@ -1,32 +1,35 @@
+<mat-card *ngFor="let user of users | async" [ngClass]="{'app-disabled': !user.isEnabled}">
+    <div fxFlex="20" fxLayoutAlign="start center">
+        {{user.name}}
+    </div>
+    <div fxFlex="30" fxLayoutAlign="start center">
+        {{user.email}}
+    </div>
+    <div fxFlex="40" fxLayoutAlign="start center">
 
-<mat-card *ngFor="let user of users | async"  [ngClass]="{'app-disabled': !user.isEnabled}">
-  <div  fxFlex="20" fxLayoutAlign="start center">
-  {{user.name}}
-</div>
-  <div  fxFlex="70" fxLayoutAlign="start center">
-    {{user.email}}
-  </div>
-  <div fxFlex="10" fxLayoutAlign="end center">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="['/user-edit', user.id]">
-        <mat-icon>edit</mat-icon>
-        <span>Edit</span>
-      </button>
-      <button *ngIf="!user.isEnabled" mat-menu-item (click)="disable(user.id, true)">
-        <mat-icon>check</mat-icon>
-        <span>Enable</span>
-      </button>
-      <button *ngIf="user.isEnabled" mat-menu-item (click)="disable(user.id, false)">
-        <mat-icon>close</mat-icon>
-        <span>Disable</span>
-      </button>
-    </mat-menu>
-  </div>
+    </div>
+
+    <div fxFlex="10" fxLayoutAlign="end end">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/user-edit', user.id]">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button *ngIf="!user.isEnabled" mat-menu-item (click)="disable(user.id, true)">
+                <mat-icon>check</mat-icon>
+                <span>Enable</span>
+            </button>
+            <button *ngIf="user.isEnabled" mat-menu-item (click)="disable(user.id, false)">
+                <mat-icon>close</mat-icon>
+                <span>Disable</span>
+            </button>
+        </mat-menu>
+    </div>
 </mat-card>
 
 <button mat-fab color="accent" class="add" [routerLink]="['/user-edit', '0']">
-  <mat-icon aria-label="Add new item">add</mat-icon>
+    <mat-icon aria-label="Add new item">add</mat-icon>
 </button>

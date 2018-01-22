@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.authService.user$
       .map(user => {
+          console.dir(user.uid);
         if (user && user.uid) {
           return true;
         } else {
