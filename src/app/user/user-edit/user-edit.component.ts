@@ -7,7 +7,6 @@ import { SkillService } from '../../skill/skill.service';
 import { Skill } from '../../skill/skill';
 import { MatSelectChange } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
-import { User } from '../user';
 
 @Component({
     selector: 'app-user-edit',
@@ -22,16 +21,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
     user: any;
     isDeleteAction: boolean;
     skills: Skill[];
-    skills$ = new Subject<Skill[]>();
+    skills$ = new Subject();
 
     constructor(private route: ActivatedRoute, private router: Router,
                 private dataService: DataService, private fb: FormBuilder,
                 private formService: FormService, private skillService: SkillService) {
         this.isNew = false;
-        // this.user.skills = [];
         this.createForm();
+
         this.skillService.getSkills().subscribe(
-            skills => this.skills$.next(skills)
+            skills => {
+                this.skills = skills;
+                this.skills$.next(skills);
+            }
         );
     }
 
@@ -41,16 +43,23 @@ export class UserEditComponent implements OnInit, OnDestroy {
             name: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             isEnabled: [''],
-            // skills: []
         });
 
         this.formService.setForm(this.userForm);
     }
 
-    // getNotUsedSkills() {
-    //     // console.dir(this.user.skills);
-    //     return this.skills.filter(skill => this.user.skills && this.user.skills.indexOf(skill) === -1);
-    // }
+
+    NotIsIn(skill) {
+        if (!this.skills) {
+            return true;
+        }
+
+        if (!this.user || !this.user.skills) {
+            return true;
+        }
+
+        return !this.user.skills.find(userSkill => skill.id === userSkill.id);
+    }
 
     removeSkill(skill: any): void {
         const index = this.user.skills.indexOf(skill);
@@ -59,6 +68,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
             this.user.skills.splice(index, 1);
         }
     }
+
 
     update() {
         if (this.userForm.status === 'INVALID') {
@@ -83,25 +93,25 @@ export class UserEditComponent implements OnInit, OnDestroy {
         );
     }
 
+
     disable(type: boolean) {
         const data = { isEnabled: type };
         this.dataService.update('users', this.id, data);
     }
 
+
     addSkill($event: MatSelectChange) {
-        console.dir($event);
-        console.dir($event.value);
+        if(!$event.value) {
+            return;
+        }
 
         if (!this.user.skills) {
             this.user.skills = [];
         }
 
-
         if (!this.user.skills.find(skill => skill.id === $event.value.id)) {
             this.user.skills.push($event.value);
         }
-
-
     }
 
     ngOnInit() {
@@ -117,12 +127,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
                 return;
             }
 
+
             this.dataService.read('users', { id: this.id }).subscribe(user => {
-                // console.dir(value);
                 this.user = user;
-
-                // notUsedSkills = user.skills.filter( skill => skill.id !== )
-
                 this.userForm.patchValue({
                     name: this.user ? this.user.name : '',
                     email: this.user ? this.user.email : '',
@@ -134,6 +141,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // this.sub.unsubscribe();
+        this.skills$.unsubscribe();
     }
 }
