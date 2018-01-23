@@ -10,6 +10,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { ProjectListComponent } from './project/project-list/project-list.component';
 import { LocationListComponent } from './location/location-list/location-list.component';
 import { LocationEditComponent } from './location/location-edit/location-edit.component';
+import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'skill-list', component: SkillListComponent },
     { path: 'skill-edit/:id', component: SkillEditComponent },
     { path: 'project-list', component: ProjectListComponent },
+    { path: 'project-edit/:id', component: ProjectEditComponent },
     { path: 'location-list', component: LocationListComponent },
     { path: 'location-edit/:id', component: LocationEditComponent },
     // { path: 'company-list', component: CompanyListComponent, canActivate: [AuthGuard] },
