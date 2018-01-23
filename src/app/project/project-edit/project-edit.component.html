@@ -1,0 +1,43 @@
+<mat-card>
+  <form [formGroup]="projectForm" novalidate>
+    <div fxFlex="70" fxLayoutAlign="start center">
+      <div fxFlex="50" fxLayoutAlign="start center">
+        <mat-form-field class="example-full-width" *ngIf="!isDeleteAction">
+          <input matInput placeholder="Name" formControlName="name">
+          <mat-error *ngIf="projectForm.get('name').status==='INVALID'">Mandatory</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" fxLayoutAlign="start center"></div>
+    </div>
+    <div fxFlex="30" fxLayoutAlign="end center">
+      <button mat-button color="primary" (click)="update()">
+        <span>Save</span>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button *ngIf="!projectForm.get('isEnabled').value" mat-menu-item (click)="disable(true)">
+          <mat-icon>check</mat-icon>
+          <span>Enable</span>
+        </button>
+        <button *ngIf="projectForm.get('isEnabled').value" mat-menu-item (click)="disable(false)">
+          <mat-icon>close</mat-icon>
+          <span>Disable</span>
+        </button>
+        <button *ngIf="projectForm.get('isEnabled').value" mat-menu-item (click)="delete()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </div>
+  </form>
+  <p>Object Value: {{ project | json }}</p>
+  <p>Form value: {{ projectForm.value | json }}</p>
+  <p>Form status: {{ projectForm.status | json }}</p>
+</mat-card>
+
+
+<button mat-fab color="accent" class="add" [routerLink]="['/project-list']">
+  <mat-icon aria-label="Back to list">reorder</mat-icon>
+</button>
