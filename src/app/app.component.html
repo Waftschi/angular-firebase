@@ -10,8 +10,10 @@
         <div *ngIf="(authService.user$ | async)?.uid">
             <button mat-button [routerLink]="['/items']">Items</button>
         </div>
-        <button mat-button [routerLink]="['/users']">Users</button>
-        <button mat-button [routerLink]="['/skills']">Skills</button>
+        <button mat-button [routerLink]="['/user-list']">Users</button>
+        <button mat-button [routerLink]="['/skill-list']">Skills</button>
+        <button mat-button [routerLink]="['/location-list']">Locations</button>
+        <button mat-button [routerLink]="['/project-list']">Projects</button>
         <!--<button mat-button>Company</button>-->
     </div>
 </mat-toolbar>

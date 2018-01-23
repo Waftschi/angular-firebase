@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../shared/data.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { FormService } from '../../shared/form.service';
 import { SkillService } from '../../skill/skill.service';
 import { Skill } from '../../skill/skill';
@@ -77,19 +77,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
         if (this.isNew === true) {
             this.dataService.create('users', this.userForm.value);
-            this.router.navigate(['/users']);
+            this.router.navigate(['/user-list']);
             return;
         }
 
         const data = { skills: this.user.skills, ...this.userForm.value };
         this.dataService.update('users', this.id, data);
-        this.router.navigate(['/users']);
+        this.router.navigate(['/user-list']);
     }
 
     delete() {
         this.isDeleteAction = true;
         this.dataService.delete('users', this.id).then(
-            _ => this.router.navigate(['/users'])
+            _ => this.router.navigate(['/user-list'])
         );
     }
 
@@ -101,11 +101,16 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
 
     addSkill($event: MatSelectChange) {
-        if(!$event.value) {
+        if (!$event.value) {
             return;
         }
 
+        if (!this.user) {
+            this.user = {};
+        }
+
         if (!this.user.skills) {
+            this.user = {};
             this.user.skills = [];
         }
 

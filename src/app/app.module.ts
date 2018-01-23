@@ -18,13 +18,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthGuard } from './shared/auth.guard';
 import { UserModule } from './user/user.module';
+import { ProjectModule } from './project/project.module';
+import { LocationModule } from './location/location.module';
 
 
 @NgModule({
     declarations: [
         AppComponent
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [
         AngularFireAuthModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -39,6 +40,8 @@ import { UserModule } from './user/user.module';
         SharedModule,
         SkillModule,
         UserModule,
+        ProjectModule,
+        LocationModule
     ],
     providers: [AuthGuard],
     bootstrap: [AppComponent]

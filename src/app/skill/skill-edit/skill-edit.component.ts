@@ -37,18 +37,18 @@ export class SkillEditComponent implements OnInit, OnDestroy {
 
         if (this.isNew === true) {
             this.dataService.create('skills', this.skillForm.value);
-            this.router.navigate(['/skills']);
+            this.router.navigate(['/skill-list']);
             return;
         }
 
         this.dataService.update('skills', this.id, this.skillForm.value);
-        this.router.navigate(['/skills']);
+        this.router.navigate(['/skill-list']);
     }
 
     delete() {
         this.isDeleteAction = true;
         this.dataService.delete('skills', this.id).then(
-            _ => this.router.navigate(['/skills'])
+            _ => this.router.navigate(['/skill-list'])
         );
     }
 
