@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from './shared/auth.service';
+import { AuthService } from './iscape/shared/auth.service';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from './shared/auth.service';
 export class AppComponent {
     title = 'app';
 
-    constructor(public authService: AuthService) {
+    constructor() {
 
     }
 }

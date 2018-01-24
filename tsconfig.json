@@ -15,5 +15,11 @@
       "es2017",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "preserveWhiteSpace": false,
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
   }
 }

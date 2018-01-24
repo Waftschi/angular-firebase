@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './iscape/home/home.component';
-import { ItemsComponent } from './iscape/items/items/items.component';
-import { SkillListComponent } from './iscape/skill/skill-list/skill-list.component';
-import { SkillEditComponent } from './iscape/skill/skill-edit/skill-edit.component';
-import { AuthGuard } from './iscape/shared/auth.guard';
-import { UserListComponent } from './iscape/user/user-list/user-list.component';
-import { UserEditComponent } from './iscape/user/user-edit/user-edit.component';
-import { ProjectListComponent } from './iscape/project/project-list/project-list.component';
-import { LocationListComponent } from './iscape/location/location-list/location-list.component';
-import { LocationEditComponent } from './iscape/location/location-edit/location-edit.component';
-import { ProjectEditComponent } from './iscape/project/project-edit/project-edit.component';
+import { HomeComponent } from './home/home.component';
+import { ItemsComponent } from './items/items/items.component';
+import { SkillListComponent } from './skill/skill-list/skill-list.component';
+import { SkillEditComponent } from './skill/skill-edit/skill-edit.component';
+import { AuthGuard } from './shared/auth.guard';
+import { UserListComponent } from './user/user-list/user-list.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { ProjectListComponent } from './project/project-list/project-list.component';
+import { LocationListComponent } from './location/location-list/location-list.component';
+import { LocationEditComponent } from './location/location-edit/location-edit.component';
+import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 
 
 const routes: Routes = [
@@ -38,5 +38,5 @@ const routes: Routes = [
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule {
+export class IscapeRoutingModule {
 }
