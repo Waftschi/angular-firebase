@@ -6,8 +6,17 @@
           <input matInput placeholder="Name" formControlName="name">
           <mat-error *ngIf="projectForm.get('name').status==='INVALID'">Mandatory</mat-error>
         </mat-form-field>
+
       </div>
-      <div fxFlex="50" fxLayoutAlign="start center"></div>
+      <div fxFlex="50" fxLayoutAlign="start center">
+        <mat-form-field>
+          <mat-select placeholder="Choose Skills" formControlName="skillId" [value]="project?.skillId">
+            <mat-option *ngFor="let skill of skills$ | async" [value]="skill.id">
+              {{ skill.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
     <div fxFlex="30" fxLayoutAlign="end center">
       <button mat-button color="primary" (click)="update()">

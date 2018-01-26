@@ -1,4 +1,3 @@
-
 <mat-card *ngFor="let skill of skills$ | async"  [ngClass]="{'app-disabled': !skill.isEnabled}">
     <div  fxFlex="90" fxLayoutAlign="start center">
         {{skill.name}}

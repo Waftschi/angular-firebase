@@ -1,7 +1,10 @@
 
 <mat-card *ngFor="let project of projects$ | async" [ngClass]="{'app-disabled': !project.isEnabled}">
-  <div  fxFlex="90" fxLayoutAlign="start center">
-    {{project.name}}
+  <div  fxFlex="30" fxLayoutAlign="start center">
+    {{project?.name}}
+  </div>
+  <div  fxFlex="60" fxLayoutAlign="start center">
+    {{getSkill(project?.skillId)?.name}}
   </div>
   <div fxFlex="10" fxLayoutAlign="end center">
     <button mat-icon-button [matMenuTriggerFor]="menu">

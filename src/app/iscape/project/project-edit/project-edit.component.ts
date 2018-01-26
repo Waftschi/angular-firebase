@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as skillActions from '../../state/actions/skill.actions';
 
 @Component({
-  selector: 'app-iscape-project-edit',
-  templateUrl: './project-edit.component.html',
-  styleUrls: ['./project-edit.component.css']
+    selector: 'app-iscape-project-edit',
+    templateUrl: './project-edit.component.html',
+    styleUrls: ['./project-edit.component.css']
 })
 export class ProjectEditComponent implements OnInit, OnDestroy {
 
@@ -17,15 +19,22 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     projectForm: FormGroup;
     project: any;
     isDeleteAction: boolean;
+    private skills$: Store<any>;
 
-    constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private fb: FormBuilder) {
+    constructor(private route: ActivatedRoute, private router: Router,
+                private dataService: DataService, private fb: FormBuilder,
+                private store: Store<any>) {
+
         this.isNew = false;
+
+        this.loadSkills();
         this.createForm();
     }
 
     createForm() {
         this.projectForm = this.fb.group({
             name: ['', Validators.required],
+            skillId: ['', Validators.required],
             isEnabled: [''],
         });
     }
@@ -54,7 +63,7 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
 
     disable(type: boolean) {
         const data = { isEnabled: type };
-        this.dataService.update('projects', this.id , data);
+        this.dataService.update('projects', this.id, data);
     }
 
     ngOnInit() {
@@ -71,19 +80,26 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
             }
 
             this.dataService.read('projects', { id: this.id }).subscribe(project => {
-                // console.dir(value);
                 this.project = project;
+
                 this.projectForm.patchValue({
                     name: this.project ? this.project.name : '',
                     isEnabled: this.project && !!this.project.isEnabled,
+                    skillId: this.project.skillId
+
                 });
             });
 
         });
     }
 
+    private loadSkills() {
+        this.store.dispatch(new skillActions.LoadAction());
+        this.skills$ = this.store.select(state => state.skill.skills);
+    }
+
     ngOnDestroy() {
-        // this.sub.unsubscribe();
+        //  this.skills$.unsubscribe();
     }
 
 }

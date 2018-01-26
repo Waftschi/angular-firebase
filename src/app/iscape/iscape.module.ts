@@ -20,8 +20,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { SkillModule } from './skill/skill.module';
 import { UserModule } from './user/user.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { skillReducer } from './state/reducers/skill.reducer';
+import { SkillEffects } from './state/effects/skill.effects';
+import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 
 
+export function instrumentOptions() {
+    return {
+        monitor: useLogMonitor({ visible: true, position: 'right' }),
+        name: 'IScape No Plan'
+
+    };
+}
 
 @NgModule({
     declarations: [IscapeComponent],
@@ -41,6 +54,11 @@ import { UserModule } from './user/user.module';
         UserModule,
         AngularFireAuthModule,
         AngularFirestoreModule,
+        StoreModule.forRoot({ skill: skillReducer }),
+        EffectsModule.forRoot([SkillEffects]),
+        StoreDevtoolsModule.instrument(instrumentOptions),
+        StoreLogMonitorModule
+
         // AngularFireModule.initializeApp(environment.firebase),
     ],
     providers: [AuthGuard],

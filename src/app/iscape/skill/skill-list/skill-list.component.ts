@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { SkillService } from '../skill.service';
 import { Observable } from 'rxjs/Observable';
-import { DataService } from '../../shared/data.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { Store } from '@ngrx/store';
+import * as skillActions from '../../state/actions/skill.actions';
+import { Skill } from '../skill';
 
 @Component({
     selector: 'app-iscape-skill-list',
@@ -11,22 +11,25 @@ import { AngularFirestore } from 'angularfire2/firestore';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkillListComponent implements OnInit, OnDestroy {
-    private skills$: Observable<any[]>;
+    private skills$: Observable<Skill[]>;
 
-    constructor(private afs: AngularFirestore, private skillService: SkillService, private dataService: DataService) {
-        this.skills$ = this.skillService.getSkills();
+
+    constructor(private store: Store<any>) {}
+
+    disable(skillId: string, type: boolean) {
+        this.store.dispatch(new skillActions.DisableAction({  skillId: skillId, isEnabled: type } ));
     }
 
     ngOnInit() {
+        this.loadSkills();
     }
 
     ngOnDestroy() {
-        // console.dir('destroy');
     }
 
-    disable(skillId: string, type: boolean) {
-        const data = { isEnabled: type };
-        this.dataService.update('skills', skillId, data);
-    }
 
+    private loadSkills() {
+        this.store.dispatch(new skillActions.LoadAction());
+        this.skills$ = this.store.select(state => state.skill.skills);
+    }
 }

@@ -1,25 +1,33 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../shared/data.service';
-import { FormBuilder,  FormGroup, Validators } from '@angular/forms';
+import * as skillActions from '../../state/actions/skill.actions';
+import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/find';
+
 
 @Component({
     selector: 'app-iscape-skill-edit',
     templateUrl: './skill-edit.component.html',
-    styleUrls: ['./skill-edit.component.css']
+    styleUrls: ['./skill-edit.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkillEditComponent implements OnInit, OnDestroy {
-    // private sub: Subscription;
     private id: string;
     private isNew: boolean;
 
     skillForm: FormGroup;
     skill: any;
-    isDeleteAction: boolean;
+    isHide: boolean;
 
-    constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private fb: FormBuilder) {
+    constructor(private route: ActivatedRoute,
+                private fb: FormBuilder,
+                private store: Store<any>) {
+
         this.isNew = false;
         this.createForm();
+        this.loadSkills();
     }
 
     createForm() {
@@ -35,53 +43,61 @@ export class SkillEditComponent implements OnInit, OnDestroy {
         }
 
         if (this.isNew === true) {
-            this.dataService.create('skills', this.skillForm.value);
-            this.router.navigate(['/skill-list']);
-            return;
+            return this.create();
         }
 
-        this.dataService.update('skills', this.id, this.skillForm.value);
-        this.router.navigate(['/skill-list']);
+
+        const payload = { skillId: this.id, ...this.skillForm.value };
+        const action = new skillActions.UpdateAction(payload);
+        this.store.dispatch(action);
     }
 
+    create() {
+        this.isHide = true;
+        const action1 = new skillActions.CreateAction(this.skillForm.value);
+        this.store.dispatch(action1);
+        return;
+    }
+
+
     delete() {
-        this.isDeleteAction = true;
-        this.dataService.delete('skills', this.id).then(
-            _ => this.router.navigate(['/skill-list'])
-        );
+        this.isHide = true;
+        const action = new skillActions.DeleteAction({ skillId: this.id });
+        this.store.dispatch(action);
     }
 
     disable(type: boolean) {
-        const data = { isEnabled: type };
-        this.dataService.update('skills', this.id , data);
+
+        const action = new skillActions.DisableAction({ skillId: this.id, isEnabled: type });
+        this.store.dispatch(action);
     }
+
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            if (this.skill === null) {
-                return;
-            }
-
-            this.id = params['id'];
-
-            if (this.id === '0') {
+            if ((this.id = params['id']) === '0') {
                 this.isNew = true;
                 return;
             }
-
-            this.dataService.read('skills', { id: this.id }).subscribe(skill => {
-                // console.dir(value);
-                this.skill = skill;
-                this.skillForm.patchValue({
-                    name: this.skill ? this.skill.name : '',
-                    isEnabled: this.skill && !!this.skill.isEnabled,
-                });
-            });
-
         });
     }
 
     ngOnDestroy() {
-        // this.sub.unsubscribe();
+    }
+
+
+    private loadSkills() {
+        if (!this.skill) {
+
+            this.store.dispatch(new skillActions.LoadAction());
+            const skills$ = this.store.select(state => state.skill.skills);
+            skills$.subscribe(skills => {
+                this.skill = skills.find(skill => skill.id === this.id);
+                this.skillForm.patchValue({
+                    name: this.skill ? this.skill.name : '',
+                    isEnabled: this.skill && !!this.skill.isEnabled || !!this.skill,
+                });
+            });
+        }
     }
 }

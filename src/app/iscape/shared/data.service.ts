@@ -27,7 +27,6 @@ export class DataService {
     }
 
     /**
-     *
      * @param {string} colName
      * @param {string} id
      * @returns {Promise<boolean>}
@@ -42,16 +41,18 @@ export class DataService {
         return this.afs.doc<AppDocument>(col + '/' + data.id).valueChanges();
     }
 
-    update(col, id, data: AppDocument): void {
+    update(col, id, data: AppDocument): Promise<boolean> {
         this.itemDoc = this.afs.doc<AppDocument>(col + '/' + id);
-        this.itemDoc.update(data);
+
+        return this.itemDoc.update(data).then(
+            result => Promise.resolve(true)
+        );
     }
 
-    create(colName, data: AppDocument): void {
+    create(colName, data: AppDocument): Promise<boolean> {
         const client = this.authService.getClient();
-
         data = <AppDocument>{ clientId: client.clientId, isEnabled: true, ...data };
-        console.dir(data);
-        const doc = this.afs.collection(colName).add(data);
+
+        return this.afs.collection(colName).add(data).then(_ => Promise.resolve(true));
     }
 }
