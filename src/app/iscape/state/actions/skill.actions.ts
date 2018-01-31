@@ -82,9 +82,6 @@ export class UpdateAction implements Action {
 
 export class UpdateActionSuccess implements Action {
     readonly type = UPDATE_SUCCESS;
-
-    // constructor(public payload: SkillPayload) {
-    // }
 }
 
 export class CreateAction implements Action {
