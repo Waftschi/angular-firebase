@@ -1,45 +1,56 @@
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
-// import { EffectsRunner, EffectsTestingModule } from '@ngrx/effects/testing';
- import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { TestBed } from '@angular/core/testing';
 import { SkillEffects } from './skill.effects';
-// import { SkillService } from '../../services/skill.service';
+import * as skillActions from '../../state/actions/skill.actions';
 import { Observable } from 'rxjs/Observable';
 import { SkillService } from '../../skill/skill.service';
-import { EffectsRunner } from '@ngrx/effects/src/effects_runner';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { DisableAction } from '../actions/skill.actions';
+import { cold, hot } from 'jasmine-marbles';
 
 describe('SkillEffects', () => {
-  let runner, skillEffects, skillService;
+    let skillEffects: SkillEffects,
+        skillService: SkillService;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      // EffectsTestingModule
-    ],
-    providers: [
-      SkillEffects,
-      {
-        provide: SkillService,
-        useValue: jasmine.createSpyObj('skillService', ['get'])
-      }
-    ]
-  }));
+    let actions: ReplaySubject<any>;
 
-  beforeEach(() => {
-    runner = TestBed.get(EffectsRunner);
-    skillEffects = TestBed.get(SkillEffects);
-    skillService = TestBed.get(SkillService);
-  });
+    beforeEach(() => TestBed.configureTestingModule({
+        imports: [
+            // EffectsTestingModule
+            RouterTestingModule.withRoutes([]),
+        ],
+        providers: [
+            SkillEffects,
+            provideMockActions(() => actions),
+            {
+                provide: SkillService,
+                useValue: jasmine.createSpyObj('skillService', { 'getSkills': Promise.resolve([{ skillId: '123' }]) })
+            }
+        ]
+    }));
 
-  describe('skill$', () => {
-
-    it('should return a LOAD_SUCCESS action, on success', function () {
-
+    beforeEach(() => {
+        // runner = TestBed.get(EffectsRunner);
+        skillEffects = TestBed.get(SkillEffects);
+        skillService = TestBed.get(SkillService);
     });
 
-    it('should return a LOAD_FAIL action, on error', function () {
+    describe('skill$', () => {
+
+        it('should return a LOAD_SUCCESS action, on success', function () {
+            actions = new ReplaySubject(1);
+            actions.next(new skillActions.LoadAction());
+
+            skillEffects.loadSkillActions$.subscribe(result => expect(result)
+                .toEqual(new skillActions.LoadSuccessAction([{ skillId: '123' }])));
+
+        });
+
 
     });
-
-  });
 
 });
